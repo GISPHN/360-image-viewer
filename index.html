@@ -41,8 +41,27 @@
     }
     #viewer {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 100vh;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    #viewer a-scene {
+      width: 100%;
+      height: 100%;
+    }
+    #back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: #fff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -56,23 +75,19 @@
   <div class="content">
     <div class="thumbnail-container">
       <div class="thumbnail-item">
-        <a href="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_220025_739-min.jpg" target="_blank">
-          <img src="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_220025_739-min.jpg" class="thumbnail" alt="Thumbnail 1">
-        </a>
+        <img src="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_220025_739-min.jpg" class="thumbnail" onclick="showViewer('https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_220025_739-min.jpg')" alt="Thumbnail 1">
         <div class="thumbnail-caption">珠洲市_津波浸水エリア沿岸部</div>
       </div>
       <div class="thumbnail-item">
-        <a href="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_215858_344-min.jpg" target="_blank">
-          <img src="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_215858_344-min.jpg" class="thumbnail" alt="Thumbnail 2">
-        </a>
+        <img src="https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_215858_344-min.jpg" class="thumbnail" onclick="showViewer('https://GISPHN.github.io/360-image-viewer/images/IMG_20240309_215858_344-min.jpg')" alt="Thumbnail 2">
         <div class="thumbnail-caption">珠洲市_津波浸水エリア内陸部</div>
       </div>
     </div>
 
     <div id="viewer">
+      <button id="back-button" onclick="hideViewer()">戻る</button>
       <a-scene>
         <a-sky id="sky"></a-sky>
-        <a-text id="close" value="閉じる" position="-2 2 -4" color="#FFFFFF" width="4" onclick="hideViewer()"></a-text>
       </a-scene>
     </div>
   </div>
