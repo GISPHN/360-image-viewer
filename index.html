@@ -9,36 +9,46 @@
     body {
       font-family: Arial, sans-serif;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
     }
     .sidebar {
-      width: 200px;
-      padding: 20px;
+      width: 100%;
       background-color: #f4f4f4;
-      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+    }
+    .sidebar h3 {
+      margin: 0;
     }
     .content {
       flex: 1;
       padding: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .thumbnail-container {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 20px 0;
     }
     .thumbnail {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       margin: 10px;
       cursor: pointer;
     }
     .thumbnail-item {
-      text-align: left;
-      margin: 10px 0;
+      text-align: center;
+      margin: 10px;
     }
     .thumbnail-caption {
       margin-top: 5px;
+      font-size: 12px;
     }
     #viewer {
       display: none;
@@ -65,6 +75,28 @@
       cursor: pointer;
       font-size: 16px;
       z-index: 1001;
+    }
+    @media (min-width: 600px) {
+      body {
+        flex-direction: row;
+      }
+      .sidebar {
+        width: 200px;
+        height: 100vh;
+        border-bottom: none;
+        border-right: 1px solid #ccc;
+        padding: 20px;
+      }
+      .content {
+        padding: 20px;
+      }
+      .thumbnail {
+        width: 100px;
+        height: 100px;
+      }
+      .thumbnail-caption {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
