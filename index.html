@@ -89,8 +89,9 @@
 
     <div id="viewer">
       <button id="back-button" onclick="hideViewer()">戻る</button>
-      <a-scene>
+      <a-scene embedded>
         <a-sky id="sky"></a-sky>
+        <a-entity camera look-controls="enabled: true"></a-entity>
       </a-scene>
     </div>
   </div>
