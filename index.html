@@ -8,6 +8,9 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .thumbnail-container {
       display: flex;
@@ -20,12 +23,25 @@
       margin: 10px;
       cursor: pointer;
     }
+    .thumbnail-item {
+      text-align: center;
+      margin: 10px;
+    }
+    .thumbnail-caption {
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
   <div class="thumbnail-container">
-    <img src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp" class="thumbnail" onclick="changeSky('1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp')" alt="Thumbnail 1">
-    <img src="https://drive.google.com/uc?export=view&id=1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1" class="thumbnail" onclick="changeSky('1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1')" alt="Thumbnail 2">
+    <div class="thumbnail-item">
+      <img src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp" class="thumbnail" onclick="changeSky('1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp')" alt="Thumbnail 1">
+      <div class="thumbnail-caption">珠洲市_津波浸水エリア沿岸部</div>
+    </div>
+    <div class="thumbnail-item">
+      <img src="https://drive.google.com/uc?export=view&id=1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1" class="thumbnail" onclick="changeSky('1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1')" alt="Thumbnail 2">
+      <div class="thumbnail-caption">珠洲市_津波浸水エリア内陸部</div>
+    </div>
   </div>
 
   <a-scene>
