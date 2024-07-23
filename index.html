@@ -35,22 +35,22 @@
 <body>
   <div class="thumbnail-container">
     <div class="thumbnail-item">
-      <img src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp" class="thumbnail" onclick="changeSky('1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp')" alt="Thumbnail 1">
-      <div class="thumbnail-caption">珠洲市_津波浸水エリア沿岸部</div>
+      <img src="path/to/IMG_20240309_215858_344-min.jpg" class="thumbnail" onclick="changeSky('path/to/IMG_20240309_215858_344-min.jpg')" alt="Thumbnail 1">
+      <div class="thumbnail-caption">珠洲市_津波浸水エリア内陸部</div>
     </div>
     <div class="thumbnail-item">
-      <img src="https://drive.google.com/uc?export=view&id=1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1" class="thumbnail" onclick="changeSky('1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1')" alt="Thumbnail 2">
-      <div class="thumbnail-caption">珠洲市_津波浸水エリア内陸部</div>
+      <img src="path/to/IMG_20240309_220025_739-min.jpg" class="thumbnail" onclick="changeSky('path/to/IMG_20240309_220025_739-min.jpg')" alt="Thumbnail 2">
+      <div class="thumbnail-caption">珠洲市_津波浸水エリア沿岸部</div>
     </div>
   </div>
 
   <a-scene>
-    <a-sky id="sky" src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp"></a-sky>
+    <a-sky id="sky" src="path/to/IMG_20240309_215858_344-min.jpg"></a-sky>
   </a-scene>
 
   <script>
-    function changeSky(imageId) {
-      document.getElementById('sky').setAttribute('src', 'https://drive.google.com/uc?export=view&id=' + imageId);
+    function changeSky(imagePath) {
+      document.getElementById('sky').setAttribute('src', imagePath);
     }
   </script>
 </body>
