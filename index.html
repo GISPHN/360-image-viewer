@@ -5,10 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>360度写真ビューワー</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .thumbnail-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+    .thumbnail {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <div class="thumbnail-container">
+    <img src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp" class="thumbnail" onclick="changeSky('1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp')" alt="Thumbnail 1">
+    <img src="https://drive.google.com/uc?export=view&id=1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1" class="thumbnail" onclick="changeSky('1Om5fu_PhXB7HVmp7_xgDqZnCqECLnHz1')" alt="Thumbnail 2">
+  </div>
+
   <a-scene>
-    <a-sky src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp"></a-sky>
+    <a-sky id="sky" src="https://drive.google.com/uc?export=view&id=1rkBbwoZOi2CvuikYgzT3DfkUDErJ4TRp"></a-sky>
   </a-scene>
+
+  <script>
+    function changeSky(imageId) {
+      document.getElementById('sky').setAttribute('src', 'https://drive.google.com/uc?export=view&id=' + imageId);
+    }
+  </script>
 </body>
 </html>
