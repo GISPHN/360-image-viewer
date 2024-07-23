@@ -162,8 +162,13 @@
     }
 
     function requestPermission(imagePath) {
-      document.getElementById('permission-dialog').style.display = 'block';
-      document.getElementById('viewer').dataset.imagePath = imagePath;
+      if (localStorage.getItem('motionPermissionGranted')) {
+        enableMotionControls();
+        showViewer(imagePath);
+      } else {
+        document.getElementById('permission-dialog').style.display = 'block';
+        document.getElementById('viewer').dataset.imagePath = imagePath;
+      }
     }
 
     function grantPermission() {
@@ -171,14 +176,15 @@
         DeviceMotionEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
-              document.querySelector('a-entity[camera]').setAttribute('look-controls', 'enabled: true');
+              localStorage.setItem('motionPermissionGranted', 'true');
+              enableMotionControls();
               showViewer(document.getElementById('viewer').dataset.imagePath);
             }
           })
           .catch(console.error);
       } else {
         // iOS 13未満またはAndroid
-        document.querySelector('a-entity[camera]').setAttribute('look-controls', 'enabled: true');
+        enableMotionControls();
         showViewer(document.getElementById('viewer').dataset.imagePath);
       }
       document.getElementById('permission-dialog').style.display = 'none';
@@ -187,6 +193,10 @@
     function denyPermission() {
       showViewer(document.getElementById('viewer').dataset.imagePath);
       document.getElementById('permission-dialog').style.display = 'none';
+    }
+
+    function enableMotionControls() {
+      document.querySelector('a-entity[camera]').setAttribute('look-controls', 'enabled: true; touchEnabled: true; mouseEnabled: true; magicWindowTrackingEnabled: true;');
     }
   </script>
 </body>
