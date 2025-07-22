@@ -19,7 +19,6 @@
     #back-button { position: absolute; top: 20px; left: 20px; padding: 10px 20px; background: #fff; color: #000; border: none; cursor: pointer; font-size: 16px; z-index: 1001; }
     #permission-dialog { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1002; }
     #permission-dialog button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    /* タグまわり */
     .tags-toggle-btn {
       margin: 10px 0 15px 0;
       padding: 7px 18px;
@@ -32,7 +31,6 @@
       transition: background 0.2s;
     }
     .tags-toggle-btn:hover { background: #1565c0; }
-
     .tags-area {
       display: none;
       margin-bottom: 10px;
@@ -44,13 +42,13 @@
     }
     .tag-btn {
       display: inline-block;
-      background: #f0f0f0;
-      color: #222;
+      background: #f8f8fa;
+      color: #23272f;
       border-radius: 22px;
       padding: 6px 18px;
       margin: 4px 7px 7px 0;
       font-size: 15px;
-      border: 1px solid #bdbdbd;
+      border: 1px solid #9bb2c3;
       cursor: pointer;
       transition: background 0.2s, color 0.2s, border 0.2s;
       font-weight: 500;
@@ -126,28 +124,50 @@
     </div>
   </div>
   <script>
-    // === タグカテゴリ分類 ===
+    // タグカテゴリ
     const tagCategories = [
-      { label: "地名", tags: ["珠洲市","内灘町","輪島市","志賀町","七尾市","かほく市","川井町(朝市)","黒島漁港","袖ヶ浜"] },
+      { label: "地名", tags: ["珠洲市","内灘町","輪島市","志賀町","七尾市","かほく市","川井町(朝市)","大谷地区","黒島漁港","袖ヶ浜"] },
       { label: "応急仮設住宅の種類", tags: ["応急仮設住宅","プレハブ型","プレハブ型2","ムービングハウス型","トレーラーハウス型"] },
       { label: "人工物", tags: ["建物","小学校","体育館","医療コンテナ","公民館","保健所","住宅","橋","境界","交差点"] },
       { label: "インフラ", tags: ["道路","建設中"] },
       { label: "自然地形", tags: ["沿岸","内陸","袖ヶ浜"] },
       { label: "災害種別", tags: ["津波浸水","液状化","火災","豪雨","土石流","斜面崩壊","海底隆起"] },
-      { label: "撮影時期", tags: ["2024年3月撮影","2025年3月撮影"] },
+      { label: "撮影時期", tags: ["2024年3月撮影","2025年3月撮影"] }
     ];
 
-    // === 写真リスト ===
+    // 写真リスト（全30件）
     const photoList = [
-      // （ここは従来通り、file/caption/tagsの配列。略。実装サンプルは前回回答のまま）
-      // ↓略のためサンプル1件
       { file:"IMG_20240309_220025_739-min.jpg", caption:"珠洲市_津波浸水_沿岸_2024年3月撮影", tags:["珠洲市","津波浸水","沿岸","2024年3月撮影"] },
-      // ...全30件ぶん入力
-      // 必要に応じてすべて記載（略）
+      { file:"IMG_20240309_215858_344-min.jpg", caption:"珠洲市_津波浸水_沿岸_内陸_2024年3月撮影", tags:["珠洲市","津波浸水","沿岸","内陸","2024年3月撮影"] },
+      { file:"IMG_20240309_143601_826-min.jpg", caption:"珠洲市_津波浸水_沿岸_建物_2024年3月撮影", tags:["珠洲市","津波浸水","沿岸","建物","2024年3月撮影"] },
+      { file:"IMG_20240309_203714_561-min.jpg", caption:"内灘町_応急仮設住宅_プレハブ型_2024年3月撮影", tags:["内灘町","応急仮設住宅","プレハブ型","2024年3月撮影"] },
+      { file:"IMG_20240309_214347_738-min.jpg", caption:"珠洲市_応急仮設住宅_プレハブ型_2024年3月撮影", tags:["珠洲市","応急仮設住宅","プレハブ型","2024年3月撮影"] },
+      { file:"IMG_20240309_220115_620-min.jpg", caption:"珠洲市_避難所_公民館_2024年3月撮影", tags:["珠洲市","避難所","公民館","2024年3月撮影"] },
+      { file:"IMG_20240309_220145_620-min.jpg", caption:"珠洲市_応急仮設住宅_ムービングハウス型_2024年3月撮影", tags:["珠洲市","応急仮設住宅","ムービングハウス型","2024年3月撮影"] },
+      { file:"IMG_20240309_220339_372-min.jpg", caption:"珠洲市_避難所_小学校_体育館_医療コンテナ_2024年3月撮影", tags:["珠洲市","避難所","小学校","体育館","医療コンテナ","2024年3月撮影"] },
+      { file:"IMG_20240309_220402_907-min.jpg", caption:"珠洲市_避難所_小学校_2024年3月撮影", tags:["珠洲市","避難所","小学校","2024年3月撮影"] },
+      { file:"IMG_20240309_220457_192-min.jpg", caption:"輪島市_応急仮設住宅_建設中_2024年3月撮影", tags:["輪島市","応急仮設住宅","建設中","2024年3月撮影"] },
+      { file:"IMG_20240309_220857_812-min.jpg", caption:"輪島市_応急仮設住宅_ムービングハウス型_2024年3月撮影", tags:["輪島市","応急仮設住宅","ムービングハウス型","2024年3月撮影"] },
+      { file:"IMG_20240309_221037_012-min.jpg", caption:"輪島市_川井町(朝市)_火災_2024年3月撮影", tags:["輪島市","川井町(朝市)","火災","2024年3月撮影"] },
+      { file:"IMG_20240309_221256_971-min.jpg", caption:"輪島市_川井町(朝市)_火災_建物_2024年3月撮影", tags:["輪島市","川井町(朝市)","火災","建物","2024年3月撮影"] },
+      { file:"IMG_20240309_221419_125-min.jpg", caption:"輪島市_川井町(朝市)_火災_建物_橋_2024年3月撮影", tags:["輪島市","川井町(朝市)","火災","建物","橋","2024年3月撮影"] },
+      { file:"IMG_20240309_221621_915-min.jpg", caption:"輪島市_川井町(朝市)_火災_建物_境界_2024年3月撮影", tags:["輪島市","川井町(朝市)","火災","建物","境界","2024年3月撮影"] },
+      { file:"IMG_20240309_222226_342-min.jpg", caption:"輪島市_液状化_道路_2024年3月撮影", tags:["輪島市","液状化","道路","2024年3月撮影"] },
+      { file:"IMG_20240309_222310_299-min.jpg", caption:"輪島市_袖ヶ浜_海底隆起_2024年3月撮影", tags:["輪島市","袖ヶ浜","海底隆起","2024年3月撮影"] },
+      { file:"IMG_20240309_222405_563-min.jpg", caption:"輪島市_袖ヶ浜_斜面崩壊_2024年3月撮影", tags:["輪島市","袖ヶ浜","斜面崩壊","2024年3月撮影"] },
+      { file:"IMG_20240309_222839_736-min.jpg", caption:"輪島市_黒島漁港_海底隆起_2024年3月撮影", tags:["輪島市","黒島漁港","海底隆起","2024年3月撮影"] },
+      { file:"IMG_20240309_223144_960-min.jpg", caption:"志賀町_応急仮設住宅_トレーラーハウス型_2024年3月撮影", tags:["志賀町","応急仮設住宅","トレーラーハウス型","2024年3月撮影"] },
+      { file:"IMG_20240310_114810_699-min.jpg", caption:"七尾市_避難所_2024年3月撮影", tags:["七尾市","避難所","2024年3月撮影"] },
+      { file:"IMG_20240310_115029_435-min.jpg", caption:"七尾市_応急仮設住宅_プレハブ型_2024年3月撮影", tags:["七尾市","応急仮設住宅","プレハブ型","2024年3月撮影"] },
+      { file:"IMG_20240310_115350_130-min.jpg", caption:"七尾市_保健所_2024年3月撮影", tags:["七尾市","保健所","2024年3月撮影"] },
+      { file:"IMG_20240310_142525_697-min.jpg", caption:"七尾市_応急仮設住宅_プレハブ型2_2024年3月撮影", tags:["七尾市","応急仮設住宅","プレハブ型2","2024年3月撮影"] },
+      { file:"IMG_20240310_143318_981-min.jpg", caption:"かほく市_液状化_建物_道路_2024年3月撮影", tags:["かほく市","液状化","建物","道路","2024年3月撮影"] },
+      { file:"IMG_20240310_143536_110-min.jpg", caption:"内灘町_液状化_小学校_道路_2024年3月撮影", tags:["内灘町","液状化","小学校","道路","2024年3月撮影"] },
+      { file:"IMG_20240310_143617_980-min.jpg", caption:"内灘町_液状化_住宅_2024年3月撮影", tags:["内灘町","液状化","住宅","2024年3月撮影"] },
+      { file:"IMG_20240310_143709_324-min.jpg", caption:"内灘町_液状化_建物_交差点_2024年3月撮影", tags:["内灘町","液状化","建物","交差点","2024年3月撮影"] },
+      { file:"IMG_20250327_094801_00_060_PureShot.jpg", caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_2025年3月撮影", tags:["珠洲市","大谷地区","豪雨","土石流","斜面崩壊","2025年3月撮影"] }
     ];
-    // -- ここに全件ぶん photoList を入れてください。 --
 
-    // === タグUIロジック ===
     let selectedTags = [];
     let tagsVisible = false;
 
@@ -156,7 +176,6 @@
       document.getElementById('tags-area').style.display = tagsVisible ? '' : 'none';
       document.getElementById('toggleTagsBtn').textContent = tagsVisible ? 'タグを非表示' : 'タグを表示';
     }
-
     function renderTags() {
       const container = document.getElementById('tags-area');
       container.innerHTML = '';
@@ -179,7 +198,6 @@
       clearBtn.onclick = () => { selectedTags = []; renderTags(); renderThumbnails(); };
       container.appendChild(clearBtn);
     }
-
     function toggleTag(tag) {
       if (selectedTags.includes(tag)) {
         selectedTags = selectedTags.filter(t => t !== tag);
@@ -189,8 +207,6 @@
       renderTags();
       renderThumbnails();
     }
-
-    // サムネイル再描画
     function renderThumbnails() {
       const cont = document.getElementById('thumbnail-container');
       cont.innerHTML = '';
@@ -213,8 +229,7 @@
         cont.appendChild(item);
       });
     }
-
-    // ビューワー・デバイス操作等は前回までのコードを維持
+    // Viewer・Permission等は前回と同じ
     const BASE_URL = 'https://gisphn.github.io/360-image-viewer/images/';
     function showViewer(imgFileName) {
       const viewer = document.getElementById('viewer');
