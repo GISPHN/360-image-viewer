@@ -6,77 +6,43 @@
   <title>360度写真ビューワー</title>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; margin: 0; }
-    .sidebar { width: 100%; background-color: #f4f4f4; border-bottom: 1px solid #ccc; padding: 10px; text-align: left; }
+    body { font-family: Arial, sans-serif; margin: 0; }
+    .sidebar { width: 100%; background: #f4f4f4; border-bottom: 1px solid #ccc; padding: 10px; }
     .sidebar h3 { margin: 0; }
-    .content { flex: 1; padding: 20px; width: 100%; }
+    .content { padding: 20px; width: 100%; }
     #tag-toggle-btn {
-      margin: 20px 0 10px 20px;
-      padding: 12px 30px;
-      font-size: 20px;
-      background: #4ea1f7;
-      color: #fff;
-      border: none;
-      border-radius: 2em;
-      cursor: pointer;
-      transition: background .2s;
-      font-weight: bold;
+      margin: 20px 0 10px 20px; padding: 12px 30px;
+      font-size: 20px; background: #4ea1f7; color: #fff; border: none; border-radius: 2em;
+      cursor: pointer; font-weight: bold;
     }
     #tag-toggle-btn:hover { background: #357fc0; }
     #tag-section { margin-bottom: 15px; margin-left: 15px; }
+    .tag-category { font-weight: bold; margin-top: 18px; margin-bottom: 5px; font-size: 20px;}
     .tag-btn {
-      display: inline-block;
-      margin: 7px 8px 7px 0;
-      padding: 8px 22px;
-      border-radius: 2em;
-      background: #ededed;
-      color: #222;
-      font-size: 18px;
-      border: none;
-      cursor: pointer;
-      transition: background .2s, color .2s;
-      font-weight: 500;
+      display: inline-block; margin: 6px 7px 6px 0; padding: 7px 20px;
+      border-radius: 2em; background: #ededed; color: #222; font-size: 17px; border: none;
+      cursor: pointer; transition: background .2s, color .2s; font-weight: 500;
     }
-    .tag-btn.selected {
-      background: #4ea1f7;
-      color: #fff;
-      font-weight: bold;
+    .tag-btn.selected { background: #4ea1f7; color: #fff; font-weight: bold; }
+    .tag-btn.disabled {
+      background: #fafafa !important; color: #bbb !important; cursor: not-allowed !important; opacity: 0.55;
     }
     .clear-tags-btn {
-      display: inline-block;
-      margin: 10px 0 0 5px;
-      padding: 8px 22px;
-      background: #fff7e6;
-      border-radius: 2em;
-      color: #666;
-      font-size: 17px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      border: 1px solid #ffe6a0;
-      transition: background .2s;
+      display: inline-block; margin: 10px 0 0 5px; padding: 8px 22px;
+      background: #fff7e6; border-radius: 2em; color: #666; font-size: 17px; border: 1px solid #ffe6a0;
+      cursor: pointer; font-weight: bold; transition: background .2s;
     }
     .clear-tags-btn:hover { background: #ffe6a0; }
     .thumbnail-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: flex-start;
-      margin: 20px 0;
+      display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start; margin: 20px 0;
     }
     .thumbnail-item {
-      text-align: center;
-      margin: 20px 40px 40px 0;
-      flex: 0 0 270px;
+      text-align: center; margin: 20px 40px 40px 0; flex: 0 0 270px;
     }
     .thumbnail {
-      width: 180px;
-      height: 180px;
-      margin-bottom: 8px;
-      object-fit: cover;
-      border-radius: 10px;
+      width: 180px; height: 180px; margin-bottom: 8px;
+      object-fit: cover; border-radius: 10px; background: #eee;
       box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      background: #eee;
     }
     .thumbnail-caption { margin-top: 2px; font-size: 18px; word-break: break-all; }
     .copy-url-btn {
@@ -89,13 +55,7 @@
     #back-button { position: absolute; top: 20px; left: 20px; padding: 10px 20px; background: #fff; color: #000; border: none; cursor: pointer; font-size: 16px; z-index: 1001; }
     #permission-dialog { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1002; }
     #permission-dialog button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #no-result {
-      display: none;
-      font-size: 22px;
-      color: #d33;
-      margin: 40px 0 0 30px;
-      font-weight: bold;
-    }
+    #no-result { display: none; font-size: 22px; color: #d33; margin: 40px 0 0 30px; font-weight: bold; }
     @media (max-width: 800px) {
       .thumbnail-item { flex: 0 0 100%; margin-right: 0; }
       .thumbnail { width: 90vw; height: 90vw; max-width: 320px; max-height: 320px; }
@@ -106,7 +66,7 @@
   <div class="sidebar">
     <h3>目次</h3>
     <ul>
-      <li>令和6年能登半島地震現地調査での360度写真(2024/3/9-10, 2025/3/26-28撮影)</li>
+      <li>令和6年 能登半島地震/豪雨 現地調査で撮影した360度写真(2024/3/9-10, 2025/3/26-28撮影)</li>
     </ul>
     <div class="header">
       <p>出典CC BY 4.0: 堀池諒,板谷智也,佐々木亮平,令和6年能登半島地震現地調査での360度写真,2024年3月,2025年3月撮影（日本地域看護学会健康危機支援委員会）</p>
@@ -125,8 +85,9 @@
     </div>
   </div>
   <script>
-    // === 360°写真リスト ===
+    // === ①全画像リスト（旧＋新） ===
     const photoList = [
+      // 旧
       {file:"IMG_20240309_220025_739-min.jpg",caption:"珠洲市_津波浸水_沿岸_2024年3月撮影"},
       {file:"IMG_20240309_215858_344-min.jpg",caption:"珠洲市_津波浸水_沿岸_内陸_2024年3月撮影"},
       {file:"IMG_20240309_143601_826-min.jpg",caption:"珠洲市_津波浸水_沿岸_建物_2024年3月撮影"},
@@ -155,41 +116,158 @@
       {file:"IMG_20240310_143536_110-min.jpg",caption:"内灘町_液状化_小学校_道路_2024年3月撮影"},
       {file:"IMG_20240310_143617_980-min.jpg",caption:"内灘町_液状化_住宅_2024年3月撮影"},
       {file:"IMG_20240310_143709_324-min.jpg",caption:"内灘町_液状化_建物_交差点_2024年3月撮影"},
-      {file:"IMG_20250327_094801_00_060_PureShot.jpg",caption:"珠洲市_豪雨_土石流_斜面崩壊_2025年3月撮影"}
+      {file:"IMG_20250327_094801_00_060_PureShot.jpg",caption:"珠洲市_豪雨_土石流_斜面崩壊_2025年3月撮影"},
+      // 新規
+      {file:"IMG_20250326_162621_00_014_PureShot-min.jpg",caption:"珠洲市_津波浸水_沿岸_内陸_2025年3月撮影"},
+      {file:"IMG_20250326_163200_00_016_PureShot-min.jpg",caption:"珠洲市_津波浸水_沿岸_建物_2025年3月撮影"},
+      {file:"IMG_20250326_170024_00_020_PureShot-min.jpg",caption:"珠洲市_避難所_小学校_体育館_医療コンテナ_2025年3月撮影"},
+      {file:"IMG_20250326_170024_00_020_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_ムービングハウス型_2025年3月撮影"},
+      {file:"IMG_20250326_175459_00_merged-min.jpg",caption:"珠洲市_白丸地区_津波浸水_沿岸_建物_2025年3月撮影"},
+      {file:"IMG_20250327_082830_00_034_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_2025年3月撮影"},
+      {file:"IMG_20250327_084811_00_039_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_通路_2025年3月撮影"},
+      {file:"IMG_20250327_091357_00_043_PureShot-min.jpg",caption:"珠洲市_大谷地区_沿岸_豪雨_土石流_斜面崩壊_2025年3月撮影"},
+      {file:"IMG_20250327_092127_00_047_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_2階建_高所視点_2025年3月撮影"},
+      {file:"IMG_20250327_094138_00_052_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_2025年3月撮影"},
+      {file:"IMG_20250327_094617_00_058_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物2_2025年3月撮影"},
+      {file:"IMG_20250327_094714_00_059_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_高所視点_2025年3月撮影"},
+      {file:"IMG_20250327_095449_00_063_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_路地_2025年3月撮影"},
+      {file:"IMG_20250327_095653_00_065_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物3_2025年3月撮影"},
+      {file:"IMG_20250327_100300_00_068_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_道路_2025年3月撮影"},
+      {file:"IMG_20250327_124314_00_074_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_プレハブ型_大規模_2025年3月撮影"},
+      {file:"IMG_20250327_131207_00_079_PureShot-min.jpg",caption:"輪島市_黒島漁港_海底隆起_沿岸_2025年3月撮影"},
+      {file:"IMG_20250327_131402_00_080_PureShot-min.jpg",caption:"輪島市_黒島漁港_海底隆起_沿岸_港外_2025年3月撮影"},
+      {file:"IMG_20250327_134343_00_082_PureShot-min.jpg",caption:"輪島市_黒島漁港_伝統的建造物_建物_2025年3月撮影"},
+      {file:"IMG_20250327_145533_00_086_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_建築完了_プレハブ型_2025年3月撮影"},
+      {file:"IMG_20250327_145956_00_087_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_まちづくり型(木造長屋型)_コミュニティ広場_2025年3月撮影"},
+      {file:"IMG_20250327_150448_00_088_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_まちづくり型(木造長屋型)_2025年3月撮影"},
+      {file:"IMG_20250327_155454_00_091_PureShot-min.jpg",caption:"輪島市_土砂・洪水氾濫_2025年3月撮影"},
+      {file:"IMG_20250327_155734_00_092_PureShot-min.jpg",caption:"輪島市_土砂・洪水氾濫_橋_2025年3月撮影"},
+      {file:"IMG_20250327_160754_00_093_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_プレハブ型_大規模_沿岸_2025年3月撮影"},
+      {file:"IMG_20250327_162509_00_097_PureShot-min.jpg",caption:"輪島市_川井町(朝市)_火災_解体後_2025年3月撮影"},
+      {file:"IMG_20250328_124742_00_102_PureShot-min.jpg",caption:"七尾市_応急仮設住宅_モバイル型_2025年3月撮影"},
+      {file:"IMG_20250328_140953_00_105_PureShot-min.jpg",caption:"かほく市_液状化_建物_道路_2025年3月撮影"},
+      {file:"IMG_20250328_142259_00_106_PureShot-min.jpg",caption:"内灘町_液状化_小学校_道路_2025年3月撮影"},
     ];
 
-    // タグ抽出(アンダーバーでsplit、重複除外、日本語の順序維持)
-    function extractUniqueTags(list) {
-      const tagSet = new Set();
-      list.forEach(photo => {
-        photo.tags = photo.caption.split('_');
-        photo.tags.forEach(t => tagSet.add(t));
-      });
-      return Array.from(tagSet);
+    // タグカテゴリ分け定義
+    const tagCategoryMap = {
+      地名: ['珠洲市','内灘町','輪島市','志賀町','七尾市','かほく市','川井町(朝市)','黒島漁港','袖ヶ浜','白丸地区','大谷地区'],
+      "応急仮設住宅の種類": ['応急仮設住宅','プレハブ型','ムービングハウス型','トレーラーハウス型','モバイル型','まちづくり型(木造長屋型)','建築完了'],
+      人工物: ['建物','小学校','体育館','医療コンテナ','公民館','保健所','住宅','境界','伝統的建造物','2階建','高所視点','コミュニティ広場','建設中','解体後'],
+      インフラ: ['道路','橋','交差点','港外','通路','路地'],
+      自然地形: ['沿岸','内陸'],
+      災害種別: ['津波浸水','液状化','火災','豪雨','土石流','斜面崩壊','海底隆起','土砂・洪水氾濫'],
+      撮影時期: ['2024年3月撮影','2025年3月撮影'],
+      その他: []
+    };
+
+    // タグ抽出・カテゴリ自動生成
+    function extractTags(photoList, categoryMap) {
+      let allTags = new Set();
+      let captionList = photoList.map(p => p.caption);
+
+      // 画像名（キャプション）からタグ抽出
+      for (const caption of captionList) {
+        for (const tag of caption.split(/[_・,、\s]+/)) {
+          allTags.add(tag);
+        }
+      }
+      allTags.delete(""); // 空文字除去
+
+      // カテゴリに割り当て
+      const categories = {};
+      for (const cat in categoryMap) categories[cat] = [];
+      for (const tag of allTags) {
+        let found = false;
+        for (const cat in categoryMap) {
+          if (categoryMap[cat].includes(tag)) {
+            categories[cat].push(tag);
+            found = true;
+            break;
+          }
+        }
+        if (!found) categories.その他.push(tag);
+      }
+      // 重複除去
+      for (const cat in categories) categories[cat] = [...new Set(categories[cat])];
+      return categories;
     }
-    // タグ選択状態
+
+    // 現在選択されているタグ
     let selectedTags = [];
     let tagsVisible = false;
-    const allTags = extractUniqueTags(photoList);
 
-    function renderTags() {
-      const container = document.getElementById('tag-section');
-      container.innerHTML = '';
-      allTags.forEach(tag => {
-        const btn = document.createElement('button');
-        btn.className = 'tag-btn' + (selectedTags.includes(tag) ? ' selected' : '');
-        btn.textContent = tag;
-        btn.onclick = () => { toggleTag(tag); };
-        container.appendChild(btn);
-      });
-      const clearBtn = document.createElement('button');
-      clearBtn.className = 'clear-tags-btn';
-      clearBtn.textContent = 'タグを全解除';
-      clearBtn.onclick = () => { selectedTags = []; renderTags(); renderThumbnails(); };
-      container.appendChild(clearBtn);
+    // 動的なタグカテゴリ
+    let dynamicCategories = extractTags(photoList, tagCategoryMap);
+
+    // タグ表示/非表示切り替え
+    function toggleTagView() {
+      tagsVisible = !tagsVisible;
+      document.getElementById('tag-section').style.display = tagsVisible ? 'block' : 'none';
+      document.getElementById('tag-toggle-btn').textContent = tagsVisible ? 'タグを非表示' : 'タグを表示';
     }
 
-    function toggleTag(tag) {
+    // サムネイル描画
+    function renderThumbnails() {
+      const container = document.getElementById('thumbnail-container');
+      container.innerHTML = '';
+      // 選択タグで絞り込み
+      let filtered = photoList.filter(photo =>
+        selectedTags.every(tag => photo.caption.includes(tag))
+      );
+      if (filtered.length === 0) {
+        document.getElementById('no-result').style.display = 'block';
+        return;
+      } else {
+        document.getElementById('no-result').style.display = 'none';
+      }
+      for (const photo of filtered) {
+        const div = document.createElement('div');
+        div.className = 'thumbnail-item';
+        div.innerHTML = `
+          <img src="https://gisphn.github.io/360-image-viewer/images/${photo.file}" class="thumbnail" loading="lazy"
+            onclick="requestPermission('${photo.file}')">
+          <div class="thumbnail-caption">${photo.caption}</div>
+          <button class="copy-url-btn" onclick="copyPhotoUrl('${photo.file}')">URLコピー</button>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    // 絞り込めるタグのみ選択可能とする
+    function getAvailableTags() {
+      let available = new Set();
+      // いま選択中のタグで絞り込まれた写真すべてから候補
+      photoList.filter(photo =>
+        selectedTags.every(tag => photo.caption.includes(tag))
+      ).forEach(photo => {
+        for (const t of photo.caption.split(/[_・,、\s]+/)) {
+          if (t !== "" && !selectedTags.includes(t)) available.add(t);
+        }
+      });
+      return available;
+    }
+
+    // タグ描画
+    function renderTags() {
+      const available = getAvailableTags();
+      let html = '';
+      for (const [cat, tags] of Object.entries(dynamicCategories)) {
+        if (!tags.length) continue;
+        html += `<div class="tag-category">${cat}</div>`;
+        for (const tag of tags) {
+          const selected = selectedTags.includes(tag);
+          const canSelect = available.has(tag) || selected; // 既に選択済みもOK
+          html += `<button class="tag-btn${selected ? ' selected' : ''}${canSelect ? '' : ' disabled'}"
+                    onclick="selectTag('${tag}')" ${canSelect ? '' : 'disabled'}>${tag}</button>`;
+        }
+      }
+      html += `<div><button class="clear-tags-btn" onclick="clearTags()">タグを全解除</button></div>`;
+      document.getElementById('tag-section').innerHTML = html;
+    }
+
+    // タグ選択処理
+    window.selectTag = function(tag) {
       if (selectedTags.includes(tag)) {
         selectedTags = selectedTags.filter(t => t !== tag);
       } else {
@@ -199,36 +277,14 @@
       renderThumbnails();
     }
 
-    function toggleTagView() {
-      tagsVisible = !tagsVisible;
-      document.getElementById('tag-section').style.display = tagsVisible ? '' : 'none';
-      document.getElementById('tag-toggle-btn').textContent = tagsVisible ? 'タグを非表示' : 'タグを表示';
+    // タグ全解除
+    function clearTags() {
+      selectedTags = [];
+      renderTags();
+      renderThumbnails();
     }
 
-    function renderThumbnails() {
-      const cont = document.getElementById('thumbnail-container');
-      cont.innerHTML = '';
-      let filtered = photoList;
-      if (selectedTags.length > 0) {
-        filtered = photoList.filter(photo =>
-          selectedTags.every(tag => photo.tags.includes(tag))
-        );
-      }
-      document.getElementById('no-result').style.display = filtered.length === 0 ? '' : 'none';
-      filtered.forEach(photo => {
-        const item = document.createElement('div');
-        item.className = 'thumbnail-item';
-        item.innerHTML = `
-          <img src="https://gisphn.github.io/360-image-viewer/images/${photo.file}" class="thumbnail" loading="lazy"
-            onclick="requestPermission('${photo.file}')" alt="${photo.caption}">
-          <div class="thumbnail-caption">${photo.caption}</div>
-          <button class="copy-url-btn" onclick="copyPhotoUrl('${photo.file}')">URLコピー</button>
-        `;
-        cont.appendChild(item);
-      });
-    }
-
-    // Viewer・Permission等は前回と同じ
+    // === 360度ビューワ等のコードはそのまま ===
     const BASE_URL = 'https://gisphn.github.io/360-image-viewer/images/';
     function showViewer(imgFileName) {
       const viewer = document.getElementById('viewer');
@@ -288,13 +344,11 @@
       }, 200);
     }
     window.onload = function () {
-      // タグはデフォルト非表示
       tagsVisible = false;
       document.getElementById('tag-section').style.display = 'none';
       document.getElementById('tag-toggle-btn').textContent = 'タグを表示';
       renderTags();
       renderThumbnails();
-      // クエリにimgがあれば初期表示
       const params = new URLSearchParams(window.location.search);
       const img = params.get('img');
       if (img) showViewer(img);
