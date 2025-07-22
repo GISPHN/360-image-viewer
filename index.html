@@ -85,9 +85,8 @@
     </div>
   </div>
   <script>
-    // === ①全画像リスト（旧＋新） ===
+    // -min.jpgだけを含むphotolist
     const photoList = [
-      // 旧
       {file:"IMG_20240309_220025_739-min.jpg",caption:"珠洲市_津波浸水_沿岸_2024年3月撮影"},
       {file:"IMG_20240309_215858_344-min.jpg",caption:"珠洲市_津波浸水_沿岸_内陸_2024年3月撮影"},
       {file:"IMG_20240309_143601_826-min.jpg",caption:"珠洲市_津波浸水_沿岸_建物_2024年3月撮影"},
@@ -116,22 +115,19 @@
       {file:"IMG_20240310_143536_110-min.jpg",caption:"内灘町_液状化_小学校_道路_2024年3月撮影"},
       {file:"IMG_20240310_143617_980-min.jpg",caption:"内灘町_液状化_住宅_2024年3月撮影"},
       {file:"IMG_20240310_143709_324-min.jpg",caption:"内灘町_液状化_建物_交差点_2024年3月撮影"},
-      {file:"IMG_20250327_094801_00_060_PureShot.jpg",caption:"珠洲市_豪雨_土石流_斜面崩壊_2025年3月撮影"},
-      // 新規
       {file:"IMG_20250326_162621_00_014_PureShot-min.jpg",caption:"珠洲市_津波浸水_沿岸_内陸_2025年3月撮影"},
       {file:"IMG_20250326_163200_00_016_PureShot-min.jpg",caption:"珠洲市_津波浸水_沿岸_建物_2025年3月撮影"},
       {file:"IMG_20250326_170024_00_020_PureShot-min.jpg",caption:"珠洲市_避難所_小学校_体育館_医療コンテナ_2025年3月撮影"},
-      {file:"IMG_20250326_170024_00_020_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_ムービングハウス型_2025年3月撮影"},
       {file:"IMG_20250326_175459_00_merged-min.jpg",caption:"珠洲市_白丸地区_津波浸水_沿岸_建物_2025年3月撮影"},
       {file:"IMG_20250327_082830_00_034_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_2025年3月撮影"},
       {file:"IMG_20250327_084811_00_039_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_通路_2025年3月撮影"},
       {file:"IMG_20250327_091357_00_043_PureShot-min.jpg",caption:"珠洲市_大谷地区_沿岸_豪雨_土石流_斜面崩壊_2025年3月撮影"},
       {file:"IMG_20250327_092127_00_047_PureShot-min.jpg",caption:"珠洲市_応急仮設住宅_まちづくり型(木造長屋型)_2階建_高所視点_2025年3月撮影"},
       {file:"IMG_20250327_094138_00_052_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_2025年3月撮影"},
-      {file:"IMG_20250327_094617_00_058_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_2025年3月撮影"},
+      {file:"IMG_20250327_094617_00_058_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物2_2025年3月撮影"},
       {file:"IMG_20250327_094714_00_059_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_高所視点_2025年3月撮影"},
       {file:"IMG_20250327_095449_00_063_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_路地_2025年3月撮影"},
-      {file:"IMG_20250327_095653_00_065_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_2025年3月撮影"},
+      {file:"IMG_20250327_095653_00_065_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物3_2025年3月撮影"},
       {file:"IMG_20250327_100300_00_068_PureShot-min.jpg",caption:"珠洲市_大谷地区_豪雨_土石流_斜面崩壊_建物_道路_2025年3月撮影"},
       {file:"IMG_20250327_124314_00_074_PureShot-min.jpg",caption:"輪島市_応急仮設住宅_プレハブ型_大規模_2025年3月撮影"},
       {file:"IMG_20250327_131207_00_079_PureShot-min.jpg",caption:"輪島市_黒島漁港_海底隆起_沿岸_2025年3月撮影"},
@@ -149,7 +145,7 @@
       {file:"IMG_20250328_142259_00_106_PureShot-min.jpg",caption:"内灘町_液状化_小学校_道路_2025年3月撮影"},
     ];
 
-    // タグカテゴリ分け定義
+    // タグカテゴリ分け定義（割愛なしで記載、省略なし）
     const tagCategoryMap = {
       地名: ['珠洲市','内灘町','輪島市','志賀町','七尾市','かほく市','川井町(朝市)','黒島漁港','袖ヶ浜','白丸地区','大谷地区'],
       "応急仮設住宅の種類": ['応急仮設住宅','プレハブ型','ムービングハウス型','トレーラーハウス型','モバイル型','まちづくり型(木造長屋型)','大規模','建築完了'],
@@ -165,16 +161,12 @@
     function extractTags(photoList, categoryMap) {
       let allTags = new Set();
       let captionList = photoList.map(p => p.caption);
-
-      // 画像名（キャプション）からタグ抽出
       for (const caption of captionList) {
         for (const tag of caption.split(/[_・,、\s]+/)) {
           allTags.add(tag);
         }
       }
-      allTags.delete(""); // 空文字除去
-
-      // カテゴリに割り当て
+      allTags.delete("");
       const categories = {};
       for (const cat in categoryMap) categories[cat] = [];
       for (const tag of allTags) {
@@ -188,30 +180,21 @@
         }
         if (!found) categories.その他.push(tag);
       }
-      // 重複除去
       for (const cat in categories) categories[cat] = [...new Set(categories[cat])];
       return categories;
     }
 
-    // 現在選択されているタグ
     let selectedTags = [];
     let tagsVisible = false;
-
-    // 動的なタグカテゴリ
     let dynamicCategories = extractTags(photoList, tagCategoryMap);
 
-    // タグ表示/非表示切り替え
-    function toggleTagView() {
-      tagsVisible = !tagsVisible;
-      document.getElementById('tag-section').style.display = tagsVisible ? 'block' : 'none';
-      document.getElementById('tag-toggle-btn').textContent = tagsVisible ? 'タグを非表示' : 'タグを表示';
-    }
+    // ページネーションではなく「無限スクロール」で段階的に表示
+    let loadedCount = 0;
+    const PAGE_SIZE = 12;
 
-    // サムネイル描画
     function renderThumbnails() {
       const container = document.getElementById('thumbnail-container');
       container.innerHTML = '';
-      // 選択タグで絞り込み
       let filtered = photoList.filter(photo =>
         selectedTags.every(tag => photo.caption.includes(tag))
       );
@@ -221,7 +204,9 @@
       } else {
         document.getElementById('no-result').style.display = 'none';
       }
-      for (const photo of filtered) {
+      // 無限スクロール用
+      let showPhotos = filtered.slice(0, loadedCount);
+      for (const photo of showPhotos) {
         const div = document.createElement('div');
         div.className = 'thumbnail-item';
         div.innerHTML = `
@@ -232,12 +217,24 @@
         `;
         container.appendChild(div);
       }
+      // まだ残っている場合、スクロール時に自動追加
+      if (showPhotos.length < filtered.length) {
+        window.onscroll = function() {
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 120) {
+            if (loadedCount < filtered.length) {
+              loadedCount += PAGE_SIZE;
+              renderThumbnails();
+            }
+          }
+        }
+      } else {
+        window.onscroll = null;
+      }
     }
 
     // 絞り込めるタグのみ選択可能とする
     function getAvailableTags() {
       let available = new Set();
-      // いま選択中のタグで絞り込まれた写真すべてから候補
       photoList.filter(photo =>
         selectedTags.every(tag => photo.caption.includes(tag))
       ).forEach(photo => {
@@ -248,7 +245,6 @@
       return available;
     }
 
-    // タグ描画
     function renderTags() {
       const available = getAvailableTags();
       let html = '';
@@ -257,7 +253,7 @@
         html += `<div class="tag-category">${cat}</div>`;
         for (const tag of tags) {
           const selected = selectedTags.includes(tag);
-          const canSelect = available.has(tag) || selected; // 既に選択済みもOK
+          const canSelect = available.has(tag) || selected;
           html += `<button class="tag-btn${selected ? ' selected' : ''}${canSelect ? '' : ' disabled'}"
                     onclick="selectTag('${tag}')" ${canSelect ? '' : 'disabled'}>${tag}</button>`;
         }
@@ -266,25 +262,31 @@
       document.getElementById('tag-section').innerHTML = html;
     }
 
-    // タグ選択処理
     window.selectTag = function(tag) {
       if (selectedTags.includes(tag)) {
         selectedTags = selectedTags.filter(t => t !== tag);
       } else {
         selectedTags.push(tag);
       }
+      loadedCount = PAGE_SIZE; // タグ切り替えたら最初から
       renderTags();
       renderThumbnails();
     }
 
-    // タグ全解除
     function clearTags() {
       selectedTags = [];
+      loadedCount = PAGE_SIZE;
       renderTags();
       renderThumbnails();
     }
 
-    // === 360度ビューワ等のコードはそのまま ===
+    function toggleTagView() {
+      tagsVisible = !tagsVisible;
+      document.getElementById('tag-section').style.display = tagsVisible ? 'block' : 'none';
+      document.getElementById('tag-toggle-btn').textContent = tagsVisible ? 'タグを非表示' : 'タグを表示';
+    }
+
+    // === 360度ビューワ等 ===
     const BASE_URL = 'https://gisphn.github.io/360-image-viewer/images/';
     function showViewer(imgFileName) {
       const viewer = document.getElementById('viewer');
@@ -343,8 +345,10 @@
         }
       }, 200);
     }
+
     window.onload = function () {
       tagsVisible = false;
+      loadedCount = PAGE_SIZE;
       document.getElementById('tag-section').style.display = 'none';
       document.getElementById('tag-toggle-btn').textContent = 'タグを表示';
       renderTags();
