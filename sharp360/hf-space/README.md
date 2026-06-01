@@ -1,3 +1,14 @@
+---
+title: GISPHN SHARP360 Research Share
+emoji: 🧭
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+license: other
+---
+
 # SHARP360 Hugging Face Spaces backend
 
 このディレクトリは、Hugging Face Spaces の Docker Space に配置する無償CPUバックエンドです。
@@ -28,9 +39,11 @@ Hardware: CPU basic free
 `sharp360/hf-space/` 配下のファイルを、作成したSpaceのルートへコピーします。
 
 ```text
+README.md
 Dockerfile
 app.py
 requirements-api.txt
+.dockerignore
 ```
 
 ## 3. Space Variablesを設定
