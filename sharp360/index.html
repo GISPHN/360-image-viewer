@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHARP360 Research Share</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">研究・教育目的の非商用デモ</p>
+      <h1>360度写真から3DGS共有リンクを作成</h1>
+      <p class="lead">正距円筒形式の360度写真を1枚アップロードし、Apple SHARPを利用した近傍視点閲覧用データを生成します。</p>
+    </section>
+
+    <section class="card">
+      <h2>変換を開始</h2>
+      <p class="notice">個人情報、顔、車両番号、住宅内部、機微情報を含む画像はアップロードしないでください。</p>
+      <label class="field-label" for="panorama">360度写真</label>
+      <input id="panorama" type="file" accept="image/jpeg,image/png">
+      <button id="submit" type="button">変換を開始</button>
+      <p id="status" class="status">API接続先を確認しています。</p>
+      <div id="result" class="result" hidden>
+        <label class="field-label" for="share-url">共有URL</label>
+        <input id="share-url" type="text" readonly>
+        <div class="actions">
+          <button id="copy" type="button">共有URLをコピー</button>
+          <a id="open-viewer" class="button-link" target="_blank" rel="noopener">3DGSを開く</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card compact">
+      <h2>現在の制約</h2>
+      <p>初期版は水平4方向の試作です。境界部の不連続や重複が残る可能性があります。無料CPU環境では処理に時間を要します。</p>
+    </section>
+  </main>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
