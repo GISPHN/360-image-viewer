@@ -17,10 +17,14 @@ import numpy as np
 import requests
 from fastapi import BackgroundTasks, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 APP_TITLE = "SHARP360 Research Share API"
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_MB", "20")) * 1024 * 1024
 FACE_SIZE = int(os.getenv("FACE_SIZE", "1024"))
+STORAGE_MODE = os.getenv("STORAGE_MODE", "local").strip().lower()
+LOCAL_STORAGE_ROOT = Path(os.getenv("LOCAL_STORAGE_ROOT", "/tmp/sharp360-scenes"))
+PUBLIC_API_BASE_URL = os.getenv("PUBLIC_API_BASE_URL", "http://localhost:7860").rstrip("/")
 SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
 SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 SUPABASE_BUCKET = os.getenv("SUPABASE_BUCKET", "sharp360-scenes")
@@ -31,6 +35,7 @@ FRONTEND_VIEWER_URL = os.getenv(
 
 ALLOWED_SUFFIXES = {".jpg", ".jpeg", ".png"}
 YAW_DEGREES = [0, 90, 180, 270]
+SUPPORTED_STORAGE_MODES = {"local", "supabase"}
 
 app = FastAPI(title=APP_TITLE)
 app.add_middleware(
@@ -74,6 +79,12 @@ def get_job(job_id: str) -> Job:
 
 
 def validate_environment() -> None:
+    if STORAGE_MODE not in SUPPORTED_STORAGE_MODES:
+        raise RuntimeError("STORAGE_MODE は local または supabase を指定してください。")
+    if STORAGE_MODE == "local":
+        LOCAL_STORAGE_ROOT.mkdir(parents=True, exist_ok=True)
+        return
+
     missing = [
         name
         for name, value in {
@@ -87,6 +98,14 @@ def validate_environment() -> None:
         raise RuntimeError(f"環境変数が未設定です: {', '.join(missing)}")
 
 
+def local_path(storage_path: str) -> Path:
+    root = LOCAL_STORAGE_ROOT.resolve()
+    candidate = (root / storage_path).resolve()
+    if candidate != root and root not in candidate.parents:
+        raise RuntimeError("保存先パスが不正です。")
+    return candidate
+
+
 def storage_headers(content_type: str | None = None) -> dict[str, str]:
     headers = {
         "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
@@ -98,8 +117,14 @@ def storage_headers(content_type: str | None = None) -> dict[str, str]:
     return headers
 
 
-def upload_bytes(storage_path: str, payload: bytes, content_type: str) -> str:
+def store_bytes(storage_path: str, payload: bytes, content_type: str) -> str:
     validate_environment()
+    if STORAGE_MODE == "local":
+        destination = local_path(storage_path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(payload)
+        return f"{PUBLIC_API_BASE_URL}/assets/{storage_path}"
+
     url = f"{SUPABASE_URL}/storage/v1/object/{SUPABASE_BUCKET}/{storage_path}"
     response = requests.post(
         url,
@@ -112,8 +137,8 @@ def upload_bytes(storage_path: str, payload: bytes, content_type: str) -> str:
     return f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/{storage_path}"
 
 
-def upload_file(storage_path: str, file_path: Path, content_type: str) -> str:
-    return upload_bytes(storage_path, file_path.read_bytes(), content_type)
+def store_file(storage_path: str, file_path: Path, content_type: str) -> str:
+    return store_bytes(storage_path, file_path.read_bytes(), content_type)
 
 
 def panorama_to_perspective(
@@ -230,7 +255,7 @@ def process_job(job_id: str, source_path: Path) -> None:
                 run_sharp(single_input, single_output)
                 ply_path = find_ply_for_stem(single_output, face_copy.stem)
                 storage_path = f"{scene_id}/{ply_path.name}"
-                ply_url = upload_file(storage_path, ply_path, "application/octet-stream")
+                ply_url = store_file(storage_path, ply_path, "application/octet-stream")
                 assets.append(
                     {
                         "url": ply_url,
@@ -247,15 +272,17 @@ def process_job(job_id: str, source_path: Path) -> None:
                 "scene_id": scene_id,
                 "source_type": "equirectangular-panorama",
                 "pipeline": "horizontal-four-view-sharp-proof-of-concept",
+                "storage_mode": STORAGE_MODE,
                 "experimental": True,
                 "limitations": [
                     "境界部の重複整理は未実装です。",
                     "方向間の尺度整合処理は未実装です。",
                     "上方および下方の視野は十分に復元されません。",
+                    "local保存ではSpace再起動後に共有URLが無効になります。",
                 ],
                 "assets": assets,
             }
-            upload_bytes(
+            store_bytes(
                 f"{scene_id}/manifest.json",
                 json.dumps(manifest, ensure_ascii=False, indent=2).encode("utf-8"),
                 "application/json; charset=utf-8",
@@ -277,12 +304,23 @@ def process_job(job_id: str, source_path: Path) -> None:
 
 @app.get("/")
 def root() -> dict[str, str]:
-    return {"service": APP_TITLE, "status": "ok"}
+    return {"service": APP_TITLE, "status": "ok", "storage_mode": STORAGE_MODE}
 
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    validate_environment()
+    return {"status": "ok", "storage_mode": STORAGE_MODE}
+
+
+@app.get("/assets/{asset_path:path}")
+def local_asset(asset_path: str) -> FileResponse:
+    if STORAGE_MODE != "local":
+        raise HTTPException(status_code=404, detail="local保存は無効です。")
+    path = local_path(asset_path)
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="ファイルが見つかりません。")
+    return FileResponse(path)
 
 
 @app.post("/api/jobs")
@@ -318,6 +356,13 @@ def scene_manifest(scene_id: str) -> dict[str, Any]:
     if not scene_id.isalnum() or len(scene_id) > 64:
         raise HTTPException(status_code=400, detail="scene IDが不正です。")
     validate_environment()
+
+    if STORAGE_MODE == "local":
+        path = local_path(f"{scene_id}/manifest.json")
+        if not path.is_file():
+            raise HTTPException(status_code=404, detail="シーンが見つかりません。Space再起動後はlocal保存の共有URLが無効になります。")
+        return json.loads(path.read_text(encoding="utf-8"))
+
     url = f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/{scene_id}/manifest.json"
     response = requests.get(url, timeout=30)
     if response.status_code == 404:
