@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHARP360 3DGS Viewer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="viewer-page">
+  <div class="viewer-toolbar">
+    <a class="button-link" href="./">戻る</a>
+    <button id="copy-viewer-url" type="button">共有URLをコピー</button>
+  </div>
+  <div id="splat-viewer"></div>
+  <p id="viewer-message" class="viewer-message">シーン情報を読み込んでいます。</p>
+  <script src="./config.js"></script>
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>
