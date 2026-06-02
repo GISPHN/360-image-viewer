@@ -2,9 +2,12 @@
   const config = window.SHARP360_CONFIG || {};
   const submitButton = document.getElementById("submit");
   const fileInput = document.getElementById("panorama");
+  const qualityProfile = document.getElementById("quality-profile");
+  const retentionDays = document.getElementById("retention-days");
   const status = document.getElementById("status");
   const result = document.getElementById("result");
   const shareUrlInput = document.getElementById("share-url");
+  const expiresAt = document.getElementById("expires-at");
   const copyButton = document.getElementById("copy");
   const openViewer = document.getElementById("open-viewer");
 
@@ -37,9 +40,18 @@
     return viewer.toString();
   }
 
+  function formatExpiration(isoText) {
+    if (!isoText) return "";
+    const date = new Date(isoText);
+    if (Number.isNaN(date.getTime())) return "";
+    return `共有期限: ${date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}`;
+  }
+
   async function createJob(file) {
     const formData = new FormData();
     formData.append("panorama", file);
+    formData.append("quality_profile", qualityProfile.value);
+    formData.append("retention_days", retentionDays.value);
     const response = await fetch(`${apiBase}/api/jobs`, { method: "POST", body: formData });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(body.detail || "変換ジョブを登録できませんでした。");
@@ -63,11 +75,12 @@
     submitButton.disabled = true;
     setStatus("API接続先が未設定です。config.js の API_BASE_URL を設定してください。", "error");
   } else {
-    setStatus("360度写真を選択してください。");
+    setStatus("360度写真、復元品質、共有期間を選択してください。");
   }
 
   submitButton.addEventListener("click", async () => {
     result.hidden = true;
+    expiresAt.textContent = "";
     try {
       validateFile(fileInput.files[0]);
       submitButton.disabled = true;
@@ -77,6 +90,7 @@
       const viewerUrl = completed.viewer_url || buildViewerUrl(completed.scene_id);
       shareUrlInput.value = viewerUrl;
       openViewer.href = viewerUrl;
+      expiresAt.textContent = formatExpiration(completed.expires_at);
       result.hidden = false;
       setStatus("共有URLを発行しました。", "success");
     } catch (error) {
