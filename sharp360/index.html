@@ -23,11 +23,11 @@
 
       <label class="field-label" for="quality-profile">復元品質</label>
       <select id="quality-profile">
-        <option value="maximum" selected>高品質：重複付き8方向・尺度整合（推奨）</option>
-        <option value="balanced">標準：重複付き6方向・尺度整合</option>
+        <option value="balanced" selected>高品質：重複付き6方向・尺度整合（推奨）</option>
+        <option value="maximum">実験的高密度：重複付き8方向・尺度整合</option>
         <option value="prototype">検証用：水平4方向・簡易統合</option>
       </select>
-      <p class="field-help">高品質処理は、観測済み領域の再現性を優先します。撮影位置から見えない面を正確に復元することはできません。</p>
+      <p class="field-help">高品質処理は、観測済み領域の再現性を優先します。8方向は処理負荷が増えるため、実画像で6方向との比較検証が必要です。撮影位置から見えない面を正確に復元することはできません。</p>
 
       <label class="field-label" for="retention-days">共有可能期間</label>
       <select id="retention-days">
