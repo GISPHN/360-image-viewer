@@ -17,13 +17,32 @@
     <section class="card">
       <h2>変換を開始</h2>
       <p class="notice">個人情報、顔、車両番号、住宅内部、機微情報を含む画像はアップロードしないでください。</p>
+
       <label class="field-label" for="panorama">360度写真</label>
       <input id="panorama" type="file" accept="image/jpeg,image/png">
+
+      <label class="field-label" for="quality-profile">復元品質</label>
+      <select id="quality-profile">
+        <option value="maximum" selected>高品質：重複付き8方向・尺度整合（推奨）</option>
+        <option value="balanced">標準：重複付き6方向・尺度整合</option>
+        <option value="prototype">検証用：水平4方向・簡易統合</option>
+      </select>
+      <p class="field-help">高品質処理は、観測済み領域の再現性を優先します。撮影位置から見えない面を正確に復元することはできません。</p>
+
+      <label class="field-label" for="retention-days">共有可能期間</label>
+      <select id="retention-days">
+        <option value="7" selected>7日間</option>
+        <option value="30">30日間</option>
+        <option value="60">60日間</option>
+      </select>
+      <p class="field-help">期限を過ぎると閲覧できなくなります。30日間・60日間を確実に維持するには、永続保存の設定が必要です。</p>
+
       <button id="submit" type="button">変換を開始</button>
       <p id="status" class="status">API接続先を確認しています。</p>
       <div id="result" class="result" hidden>
         <label class="field-label" for="share-url">共有URL</label>
         <input id="share-url" type="text" readonly>
+        <p id="expires-at" class="field-help"></p>
         <div class="actions">
           <button id="copy" type="button">共有URLをコピー</button>
           <a id="open-viewer" class="button-link" target="_blank" rel="noopener">3DGSを開く</a>
@@ -32,8 +51,8 @@
     </section>
 
     <section class="card compact">
-      <h2>現在の制約</h2>
-      <p>初期版は水平4方向の試作です。境界部の不連続や重複が残る可能性があります。無料CPU環境では処理に時間を要します。</p>
+      <h2>復元の限界</h2>
+      <p>360度写真は撮影地点から全方向を観測できますが、建物、家具、樹木等の背後は写っていません。高品質モードでは、観測済み領域の境界整理と方向間の尺度整合を行います。写っていない面を事実として復元するものではありません。</p>
     </section>
   </main>
   <script src="./config.js"></script>
